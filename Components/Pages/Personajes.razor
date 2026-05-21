@@ -1,0 +1,240 @@
+﻿@page "/personajes"
+@rendermode InteractiveServer
+
+@using ByParcial2Pro3.Models
+
+<h1>Registro de Personajes RPG</h1>
+
+<hr />
+
+<h3>Datos Generales</h3>
+
+<label>Nombre:</label>
+<input @bind="nombre" />
+<br />
+
+<label>Nivel:</label>
+<input type="number" @bind="nivel" />
+<br />
+
+<label>Puntos de Vida:</label>
+<input type="number" @bind="pv" />
+<br />
+
+<label>Experiencia:</label>
+<input type="number" @bind="xp" />
+<br />
+<br />
+
+<label>Tipo Personaje:</label>
+
+<select @bind="tipoSeleccionado">
+
+    <option>Guerrero</option>
+    <option>Mago</option>
+    <option>Arquero</option>
+
+</select>
+
+<hr />
+
+@if (tipoSeleccionado == "Guerrero")
+{
+    <h3>Datos Guerrero</h3>
+
+    <label>Tipo arma:</label>
+
+    <select @bind="tipoArma">
+        <option>Espada</option>
+        <option>Hacha</option>
+        <option>Martillo</option>
+        <option>Lanza</option>
+    </select>
+
+    <br />
+
+    <label>Defensa física:</label>
+    <input type="number" @bind="defensa" />
+}
+
+@if (tipoSeleccionado == "Mago")
+{
+    <h3>Datos Mago</h3>
+
+    <label>Escuela magia:</label>
+
+    <select @bind="escuela">
+        <option>Fuego</option>
+        <option>Hielo</option>
+        <option>Oscuridad</option>
+    </select>
+
+    <br />
+
+    <label>Mana:</label>
+    <input type="number" @bind="mana" />
+}
+
+@if (tipoSeleccionado == "Arquero")
+{
+    <h3>Datos Arquero</h3>
+
+    <label>Tipo arco:</label>
+
+    <select @bind="tipoArco">
+        <option>Compuesto</option>
+        <option>Largo</option>
+        <option>Recurvo</option>
+        <option>Ballesta</option>
+    </select>
+
+    <br />
+
+    <label>Precisión:</label>
+    <input type="number" @bind="precision" />
+}
+
+<br />
+<br />
+
+<button @onclick="Guardar">
+    Guardar Personaje
+</button>
+
+<hr />
+
+<h2>Listado Personajes</h2>
+
+<h3>Total personajes: @personajes.Count</h3>
+
+<table border="1">
+
+    <tr>
+        <th>Nombre</th>
+        <th>Nivel</th>
+        <th>PV</th>
+        <th>XP</th>
+        <th>Tipo</th>
+    </tr>
+
+    @foreach (var item in personajes)
+    {
+        <tr>
+            <td>@item.Nombre</td>
+            <td>@item.Nivel</td>
+            <td>@item.PuntosVida</td>
+            <td>@item.Experiencia</td>
+            <td>@item.GetType().Name</td>
+        </tr>
+    }
+
+</table>
+
+@code {
+
+    List<Personaje> personajes = new();
+
+    ArchivoPersonajes archivo = new();
+
+    string nombre = "";
+
+    int nivel = 1;
+
+    int pv = 1;
+
+    int xp = 0;
+
+    string tipoSeleccionado = "Guerrero";
+
+    string tipoArma = "Espada";
+
+    int defensa = 1;
+
+    string escuela = "Fuego";
+
+    int mana = 1;
+
+    string tipoArco = "Compuesto";
+
+    int precision = 0;
+
+    protected override void OnInitialized()
+    {
+        personajes = archivo.Leer();
+    }
+
+    void Guardar()
+    {
+        if (nivel < 1 || nivel > 99)
+        {
+            return;
+        }
+
+        if (pv < 1)
+        {
+            return;
+        }
+
+        if (xp < 0)
+        {
+            return;
+        }
+
+        if (tipoSeleccionado == "Guerrero")
+        {
+            Guerrero g = new();
+
+            g.Nombre = nombre;
+            g.Nivel = nivel;
+            g.PuntosVida = pv;
+            g.Experiencia = xp;
+
+            g.TipoArma = tipoArma;
+            g.DefensaFisica = defensa;
+
+            personajes.Add(g);
+        }
+
+        if (tipoSeleccionado == "Mago")
+        {
+            Mago m = new();
+
+            m.Nombre = nombre;
+            m.Nivel = nivel;
+            m.PuntosVida = pv;
+            m.Experiencia = xp;
+
+            m.EscuelaMagia = escuela;
+            m.Mana = mana;
+
+            personajes.Add(m);
+        }
+
+        if (tipoSeleccionado == "Arquero")
+        {
+            Arquero a = new();
+
+            a.Nombre = nombre;
+            a.Nivel = nivel;
+            a.PuntosVida = pv;
+            a.Experiencia = xp;
+
+            a.TipoArco = tipoArco;
+            a.Precision = precision;
+
+            personajes.Add(a);
+        }
+
+        archivo.Guardar(personajes);
+
+        Limpiar();
+    }
+
+    void Limpiar()
+    {
+        nombre = "";
+        nivel = 1;
+        pv = 1;
+        xp = 0;
+    }
+}
