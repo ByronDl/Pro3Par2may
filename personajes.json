@@ -1,0 +1,26 @@
+[
+  {
+    "TipoArma": "Lanza",
+    "DefensaFisica": 90,
+    "Nombre": "Mario",
+    "Nivel": 80,
+    "PuntosVida": 1,
+    "Experiencia": 8
+  },
+  {
+    "EscuelaMagia": "Oscuridad",
+    "Mana": 1,
+    "Nombre": "Luigui",
+    "Nivel": 50,
+    "PuntosVida": 1,
+    "Experiencia": 10
+  },
+  {
+    "TipoArco": "Ballesta",
+    "Precision": 80,
+    "Nombre": "Oscar",
+    "Nivel": 60,
+    "PuntosVida": 1,
+    "Experiencia": 20
+  }
+]
